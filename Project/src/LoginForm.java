@@ -39,7 +39,7 @@ public class LoginForm extends JFrame {
                 String password = passwordField.getText();
                 boolean value = login.LoginUser(username, password);
                 if (value) {
-                    new GUIExample();
+                    new Home();
                 }
 
             }

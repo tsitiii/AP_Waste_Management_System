@@ -54,6 +54,17 @@ public class RegistrationForm extends JFrame {
                }
             }
         });
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                nameField.setText("");
+                phoneField.setText("");
+                emailField.setText("");
+                passwordField.setText("");
+                areaField.setText("");
+                dispose();//closing
+            }
+        });
 
         formPanel.add(nameLabel);
         formPanel.add(nameField);
@@ -70,7 +81,6 @@ public class RegistrationForm extends JFrame {
 
         add(formPanel, BorderLayout.CENTER);
     }
-
     public void showRegisterFrame() {
         setVisible(true);
     }
