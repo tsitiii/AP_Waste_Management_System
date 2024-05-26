@@ -5,7 +5,7 @@ import java.sql.SQLException;
 public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/waste_management";
     private static final String USER = "root"; 
-    private static final String PASSWORD = "password"; 
+    private static final String PASSWORD = "pass123#pass"; 
 
     public static Connection getConnection() {
         try {
