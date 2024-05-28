@@ -9,12 +9,11 @@ import java.sql.SQLException;
 import javax.swing.*;
 
 public class RecyclableMaterialsApp {
-    private JFrame frame; // Main frame
-    private JTextArea textArea; // Text area to display results
-    private JTextField searchField; // Text field for material search input
-    private JComboBox<String> cityComboBox; // Combo box for selecting city
+    private JFrame frame; 
+    private JTextArea textArea; 
+    private JTextField searchField; 
+    private JComboBox<String> cityComboBox; 
 
-    // Main method to launch the application
     public void showRecycleFrame(){
         EventQueue.invokeLater(() -> {
             try {
@@ -26,19 +25,17 @@ public class RecyclableMaterialsApp {
         });
     }
 
-    // Constructor to initialize the application
     public RecyclableMaterialsApp() {
         initialize();
     }
 
-    // Initialize the contents of the frame
     public void initialize() {
         frame = new JFrame("Recyclable Materials Information");
         frame.setBounds(100, 100, 600, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
 
-        JPanel panel = new JPanel(); // Panel for the top part of the UI
+        JPanel panel = new JPanel(); 
         frame.getContentPane().add(panel, BorderLayout.NORTH);
         JLabel lblSearch = new JLabel("Search Material:");
         panel.add(lblSearch);
@@ -85,7 +82,6 @@ public class RecyclableMaterialsApp {
                 ResultSet rs = stmt.executeQuery(); // Execute query
 
                 StringBuilder sb = new StringBuilder();
-                // Process the result set
                 while (rs.next()) {
                     String name = rs.getString("name");
                     String description = rs.getString("description");
@@ -109,7 +105,6 @@ public class RecyclableMaterialsApp {
         }
     }
 
-    // Method to find recycling centers based on city
     private void findRecyclingCenter() {
         String city = (String) cityComboBox.getSelectedItem(); // Get selected city
         Connection conn = DatabaseConnection.getConnection(); // Get database connection

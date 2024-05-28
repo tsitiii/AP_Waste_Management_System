@@ -1,22 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import java.awt.*;
+import java.sql.*;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 public class Admin extends JFrame {
     static final String Dburl = "jdbc:mysql://localhost:3306/waste_management";
     static final String user = "root";
@@ -26,7 +11,7 @@ public class Admin extends JFrame {
     private DefaultTableModel tableModel;
 
     public Admin() {
-        setTitle("Welcome to Waste Management");
+        setTitle("Admin Profile");
         setSize(1500, 1000);
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,32 +22,39 @@ public class Admin extends JFrame {
         searchPanel.setLayout(new GridLayout(1, 5, 5, 5));
         searchPanel.setBackground(new Color(0, 128, 0));
 
-        JLabel searchJLabel = new JLabel("Search");
+  
         JTextField searchJTextField = new JTextField();
         JButton searchButton = new JButton("Search");
         JLabel filterJLabel = new JLabel("Filter by Role:");
         JComboBox<String> roleBox = new JComboBox<>(new String[] { "All", "Employee", "Admin", "Moderator" });
 
-        searchPanel.add(searchJLabel);
         searchPanel.add(searchJTextField);
         searchPanel.add(searchButton);
         searchPanel.add(filterJLabel);
         searchPanel.add(roleBox);
         searchPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 30, 50, 30));
-        // Create the user table
+
+        JLabel usersLabel = new JLabel("List of Users");
+        usersLabel.setForeground(new Color(0, 0, 128)); 
+        usersLabel.setFont(new Font("Arial", Font.BOLD, 20)); 
+        usersLabel.setHorizontalAlignment(JLabel.CENTER); 
+        usersLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 0, 20, 0)); 
+
         userTable = new JTable();
-        tableModel = (DefaultTableModel) userTable.getModel();
+        tableModel = new DefaultTableModel();
+        userTable.setModel(tableModel);
         tableModel.addColumn("Name");
         tableModel.addColumn("Email");
         tableModel.addColumn("Role");
-        populateUserTable();
+         populateUserTable();
+        //  getContentPane().add(new JScrollPane(userTable), BorderLayout.CENTER);
 
-        // Add the components to the frame
+
         getContentPane().add(searchPanel, BorderLayout.NORTH);
-        getContentPane().add(new JScrollPane(userTable), BorderLayout.CENTER);
+        getContentPane().add(usersLabel, BorderLayout.CENTER);
+        getContentPane().add(new JScrollPane(userTable), BorderLayout.SOUTH);
         userTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 30, 50, 30));
         userTable.setBackground(new Color(0, 128, 0));
-        // Add action listeners for search and filter
         searchButton
                 .addActionListener(e -> filterUsers(searchJTextField.getText(), (String) roleBox.getSelectedItem()));
         roleBox.addActionListener(e -> filterUsers(searchJTextField.getText(), (String) roleBox.getSelectedItem()));
@@ -72,6 +64,7 @@ public class Admin extends JFrame {
         try (Connection connection = DriverManager.getConnection(Dburl, user, passwordd)) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM Registered");
+            tableModel.setRowCount(0);
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 String email = resultSet.getString("email");

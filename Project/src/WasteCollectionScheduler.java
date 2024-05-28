@@ -176,11 +176,8 @@ public class WasteCollectionScheduler extends JFrame {
             JOptionPane.showMessageDialog(this, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
+    public void showSchedule(){
             WasteCollectionScheduler scheduler = new WasteCollectionScheduler();
             scheduler.setVisible(true);
-        });
+        }
     }
-
-}

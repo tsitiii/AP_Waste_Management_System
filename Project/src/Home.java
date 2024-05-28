@@ -41,16 +41,10 @@ public class Home extends JFrame {
         wasteDisposalButton.setBackground(new Color(4, 128, 5));
         wasteDisposalButton.setForeground(Color.WHITE);
         wasteDisposalButton.setFont(buttonFont);
-        wasteDisposalButton.addActionListener(new ActionListener(){
+        wasteDisposalButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent event){
-                wasteDisposalButton.addActionListener(new ActionListener(){
-                    @Override
-                    public void actionPerformed(ActionEvent event){
-                        WasteCollectionScheduler scheduler = new WasteCollectionScheduler();
-                        scheduler.setVisible(true);
-                    }
-                });
+            public void actionPerformed(ActionEvent event) {
+                scheduler.showSchedule();
             }
         });
 
@@ -163,6 +157,42 @@ public class Home extends JFrame {
         wasteCollectionButton.setFont(new Font("Arial", Font.BOLD, 16));
         wasteCollectionButton.setBackground(new Color(0, 128, 255));
         wasteCollectionButton.setForeground(Color.WHITE);
+       
+wasteCollectionButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent event) {
+        Connection conn = DatabaseConnection.getConnection();
+        
+        try {
+
+            String name = nameField.getText().trim();
+            String email = emailField.getText().trim();
+            String comments = commentsArea.getText().trim();
+            
+            String sql = "INSERT INTO Report (name, email, comment) VALUES (?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, name);
+            statement.setString(2, email);
+            statement.setString(3, comments);
+            
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(contactUsPanel, "Report submitted successfully!");
+            } else {
+                JOptionPane.showMessageDialog(contactUsPanel, "Error submitting report. Please try again.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(contactUsPanel, "Error submitting report. Please try again.");
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+});
 
         contactUsPanel.add(nameLabel);
         contactUsPanel.add(nameField);
